@@ -7,7 +7,7 @@ SCHEME       = LLAdHoc
 IMSG_LIST    = a_imessage_email@mac.com +86.18621800000 another_email@me.com
 
 # Comment the following line if you prefer Bonjour Network
-# BASE_URL     = ota.nsnotfound.com 
+# BASE_URL     = http://ota.nsnotfound.com
 
 # Your Mailgun mail list
 EMAIL_LIST   = newproject@lexrus.mailgun.org
