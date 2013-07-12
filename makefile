@@ -42,6 +42,11 @@ INFO_CLR     = \033[01;33m
 RESULT_CLR   = \033[01;32m
 RESET_CLR    = \033[0m
 
+SECOND_ARG   = "*"
+ifneq (,$(filter-out $@,$(MAKECMDGOALS)))
+SECOND_ARG = $(filter-out $@,$(MAKECMDGOALS))
+endif
+
 
 define googl
 $(shell curl -s -d "{'longUrl':'$(BASE_URL)'}" -H 'Content-Type: application/json' https://www.googleapis.com/urlshortener/v1/url | grep -o 'http://goo.gl/[^\"]*')
@@ -94,6 +99,9 @@ clean:
 build:
 	@echo "${INFO_CLR}>> Building $(APP)...${RESTORE_CLR}${RESULT_CLR}"
 	@xcodebuild -sdk iphoneos -workspace "$(WORKSPACE).xcworkspace" -scheme "$(SCHEME)" -configuration "$(CONFIG)" -jobs 6 build | tail -n 2 | cat && printf "${RESET_CLR}"
+
+show_settings:
+	@xcodebuild -sdk iphoneos -workspace "$(WORKSPACE).xcworkspace" -scheme "$(SCHEME)" -configuration "$(CONFIG)" -showBuildSettings 2>/dev/null | grep "$(SECOND_ARG)"
 
 package:
 	@echo "${INFO_CLR}>> PACKAGING $(APP)...${RESTORE_CLR}"
@@ -162,3 +170,9 @@ imessage:
 		-e "send \"$(app_title) is ready itms-services://?action=download-manifest&url=$(BASE_URL)/$(APP).ipa.plist\" to theBuddy" \
 		-e "end tell" ; \
 	done
+
+%:
+	@echo 1>/dev/null
+
+@:
+	@echo 1>/dev/null

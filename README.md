@@ -5,10 +5,11 @@ The universal makefile for my iOS projects distributes IPAs in seconds.
 * Git log as release notes
 * goo.gl URL
 * QRCode for URL
-* Upload to SFTP via rsync
-* Mailgun emails list
-* local OTA server with Bonjour address
-* Send iMessages to tester's iPhone
+* Upload to SFTP via rsync -- ```make upload```
+* Mailgun emails list -- ```make send_email```
+* local OTA server with Bonjour address -- ```make serve``` and ```make stop_serve```
+* Send iMessages to tester's iPhone -- ```make imessage```
+* Show build settings -- ```make show_settings PRODUCT_SETTINGS_PATH``` or ```make show_settings | grep FLAG.*```
 
 ## Screenshots
 ![screen shot 2013-07-03 at 10 59 13 pm](https://f.cloud.github.com/assets/219689/744065/8faf92da-e3f4-11e2-9b97-889543a27fd4.png)
