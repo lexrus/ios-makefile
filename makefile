@@ -1,7 +1,7 @@
-APP          = LL
-WORKSPACE    = LL
-CONFIG       = AdHoc
-SCHEME       = LLAdHoc
+APP          = APP_NAME
+WORKSPACE    = WORKSPACE_NAME
+CONFIG       = InHouse
+SCHEME       = APP_INHOUSE
 
 # iMessage addresses list seperated with white space
 IMSG_LIST    = a_imessage_email@mac.com +86.18621800000 another_email@me.com
@@ -48,8 +48,12 @@ SECOND_ARG = $(filter-out $@,$(MAKECMDGOALS))
 endif
 
 
-define googl
-$(shell curl -s -d "{'longUrl':'$(BASE_URL)'}" -H 'Content-Type: application/json' https://www.googleapis.com/urlshortener/v1/url | grep -o 'http://goo.gl/[^\"]*')
+#define googl
+#$(shell curl -s -d "{'longUrl':'$(BASE_URL)'}" -H 'Content-Type: application/json' https://www.googleapis.com/urlshortener/v1/url | grep -o 'http://goo.gl/[^\"]*')
+#endef
+
+define short_url
+$(shell curl -X POST -d "text_mode=1&url=$(BASE_URL)" http://lexr.us/api/url)
 endef
 
 define qrencode
@@ -84,7 +88,7 @@ footer{font-size:x-small;font-weight:bolder;}</style></head><body><div class="co
 <p><img class="icon" src="$(BASE_URL)/icon.png"/></p><h1>$(app_title)</h1>\
 <div class="install_button"><a href="itms-services://?action=download-manifest&amp;url=$(BASE_URL)/$(APP).ipa.plist">INSTALL</a></div>\
 <ul class="release_notes">$(GIT_LOG)</ul>\
-<p><a href="$(googl)">$(googl)</a></p>\
+<p><a href="$(short_url)">$(short_url)</a></p>\
 $(qrencode)\
 <footer>'`date`'</footer></div></body></html>'
 endef
