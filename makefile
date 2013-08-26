@@ -1,28 +1,25 @@
-APP          = APP_NAME
-WORKSPACE    = WORKSPACE_NAME
-CONFIG       = InHouse
-SCHEME       = APP_INHOUSE
+# The MIT License (MIT)
+# Copyright © 2013 Lex Tang, http://LexTang.com
 
-# iMessage addresses list seperated with white space
-IMSG_LIST    = a_imessage_email@mac.com +86.18621800000 another_email@me.com
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the “Software”), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
 
-# Comment the following line if you prefer Bonjour Network
-# BASE_URL     = http://ota.nsnotfound.com
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
 
-# Your Mailgun mail list
-EMAIL_LIST   = newproject@lexrus.mailgun.org
-EMAIL_DOMAIN = lexrus.mailgun.org
-# Create a Keychain password item named "mailgun api key"
-MAILGUN_API_KEY = $(shell security find-generic-password -l "mailgun api key" -gw)
+# THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+# THE SOFTWARE.
 
-# Your server with SSH access
-SFTP_SERVER  = lexrus@nsnotfound.com
-SFTP_PATH    = /var/ota
-SFTP_PORT    = 22
-
-# Share via Apple Bonjour Network
-BASE_PORT    = 9966
-BASE_URL    ?= http://$(shell hostname):$(BASE_PORT)
+include $(CURDIR)/makefile.cfg
 
 IPA_URL      = $(BASE_URL)/$(APP).ipa
 ICON_NAME    = Icon@2x.png
