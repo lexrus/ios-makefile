@@ -1,14 +1,14 @@
 # iOS Makefile
-The universal makefile for my iOS projects distributes IPAs in seconds.
+The universal makefile for my iOS projects distributes IPAs in seconds. (a.k.a. OTA makefile)
 
 ## Features
 * Git log as release notes
-* Shorten URL with my open source shortener: http://lexr.us <s>or goo.gl</s>
-* QRCode for URL
+* Shorten URL with my open source shortener: http://lexr.us <del>or goo.gl</del>
+* QRCode of URL
 * Upload to SFTP via rsync -- ```make upload```
-* Mailgun emails list -- ```make send_email```
-* local OTA server with Bonjour address -- ```make serve``` and ```make stop_serve```
-* Send iMessages to tester's iPhone -- ```make imessage```
+* Send emails with Mailgun -- ```make send_email```
+* Local OTA server with __Bonjour__ -- ```make serve``` and ```make stop_serve```
+* Send __iMessages__ to tester's iPhone -- ```make imessage```
 * Show build settings -- ```make show_settings PRODUCT_SETTINGS_PATH``` or ```make show_settings | grep FLAG.*```
 
 ## Screenshots
@@ -18,9 +18,18 @@ The universal makefile for my iOS projects distributes IPAs in seconds.
 
 ![screen shot 2013-07-03 at 10 54 24 pm](https://f.cloud.github.com/assets/219689/744070/a4b57866-e3f4-11e2-96f8-624b1c0c71da.png)
 
+## Install
+
+Download the __makefile__ and the config file __makefile.cfg__ into your project home folder:
+```
+curl -OL http://git.io/makefile
+ls makefile.cfg 2>/dev/null >/dev/null||curl -OL http://git.io/makefile.cfg
+```
+
 ## How to use?
-* Download the __makefile__ and the config file __makefile.cfg__ into your project home folder. ```curl -OL http://git.io/makefile ; ls makefile.cfg 2>/dev/null >/dev/null||curl -OL http://git.io/makefile.cfg```
+
 * Modify makefile.cfg to match your workspace settings.
+* Make sure your build path is __relative to workspace__.
 * ```make``` to build & package your IPA.
 * ```make upload``` to upload the package to your SFTP server.
 * or ```make serve``` to serve the IPA in your local network.
