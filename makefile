@@ -50,7 +50,7 @@ endif
 #endef
 
 define short_url
-$(shell curl -X POST -d "text_mode=1&url=$(BASE_URL)" http://lexr.us/api/url)
+$(shell curl -s -X POST -d "text_mode=1&url=$(BASE_URL)" http://lexr.us/api/url)
 endef
 
 define qrencode
