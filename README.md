@@ -10,6 +10,7 @@ The universal makefile for my iOS projects distributes IPAs in seconds. (a.k.a. 
 * Local OTA server with __Bonjour__ -- ```make serve``` and ```make stop_serve```
 * Send __iMessages__ to tester's iPhone -- ```make imessage```
 * Show build settings -- ```make show_settings PRODUCT_SETTINGS_PATH``` or ```make show_settings | grep FLAG.*```
+* Sort Xcode project.pbxproj with [sort-Xcode-project-file](http://danieltull.co.uk/blog/2013/09/05/easier-merging-of-xcode-project-files/) ```make sort```
 
 ## Screenshots
 ![screen shot 2013-07-03 at 10 59 13 pm](https://f.cloud.github.com/assets/219689/744065/8faf92da-e3f4-11e2-9b97-889543a27fd4.png)

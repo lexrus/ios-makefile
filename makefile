@@ -173,6 +173,10 @@ imessage:
 		-e "end tell" ; \
 	done
 
+sort:
+	@ls .sort-Xcode-project-file 2>/dev/null >/dev/null||curl -L https://raw.github.com/WebKit/webkit/master/Tools/Scripts/sort-Xcode-project-file -o .sort-Xcode-project-file
+	@perl .sort-Xcode-project-file "$(APP).xcodeproj/project.pbxproj" && echo "${RESULT_CLR}** $(APP).xcodeproj/project.pbxproj was sorted **${RESET_CLR}"
+
 %:
 	@echo 1>/dev/null
 
