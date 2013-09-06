@@ -5,12 +5,12 @@ The universal makefile for my iOS projects distributes IPAs in seconds. (a.k.a. 
 * Git log as release notes
 * Shorten URL with my open source shortener: http://lexr.us <del>or goo.gl</del>
 * QRCode of URL.
-* Upload to SFTP via rsync -- ```make upload```
-* Send emails with Mailgun -- ```make send_email```
-* Local OTA server with __Bonjour__ -- ```make serve``` and ```make stop_serve```
-* Send __iMessages__ to tester's iPhone -- ```make imessage```
-* Show build settings -- ```make show_settings PRODUCT_SETTINGS_PATH``` or ```make show_settings | grep FLAG.*```
-* Sort Xcode project.pbxproj with [sort-Xcode-project-file](http://danieltull.co.uk/blog/2013/09/05/easier-merging-of-xcode-project-files/) ```make sort```
+* ```make upload``` --- Upload to SFTP via rsync
+* ```make send_email``` --- Send emails with Mailgun
+* ```make serve``` and ```make stop_serve``` --- Local OTA server with __Bonjour__
+* ```make imessage``` --- Send __iMessages__ to tester's iPhone
+* ```make show_settings PRODUCT_SETTINGS_PATH``` or ```make show_settings | grep FLAG.*``` --- Show build settings
+* ```make sort``` --- Sort Xcode project.pbxproj with [sort-Xcode-project-file](http://danieltull.co.uk/blog/2013/09/05/easier-merging-of-xcode-project-files/)
 
 ## Screenshots
 ![screen shot 2013-07-03 at 10 59 13 pm](https://f.cloud.github.com/assets/219689/744065/8faf92da-e3f4-11e2-9b97-889543a27fd4.png)
