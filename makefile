@@ -87,7 +87,8 @@ footer{font-size:x-small;font-weight:bolder;}</style></head><body><div class="co
 <ul class="release_notes">$(GIT_LOG)</ul>\
 <p><a href="$(short_url)">$(short_url)</a></p>\
 $(qrencode)\
-<footer>'`date`'</footer></div></body></html>'
+<footer>'`date`'</footer>\
+<p><a href="https://github.com/lexrus/ios-makefile">https://github.com/lexrus/ios-makefile</a></p></div></body></html>'
 endef
 
 default: clean build package html
