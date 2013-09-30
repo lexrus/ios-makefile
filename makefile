@@ -29,9 +29,10 @@ UPLOAD_PATH  = $(BUILD_PATH)/Upload
 INFO_FILE    = $(BUILD_PATH)/Products/$(CONFIG)-iphoneos/$(APP).app/Info.plist
 PLIST_FILE   = $(UPLOAD_PATH)/$(APP).ipa.plist
 IPA_FILE     = $(UPLOAD_PATH)/$(APP).ipa
+BUILD_LOG   ?= OFF
 
 # Abbreviated Git logs
-GIT_LOG      = $(shell git log --no-merges --pretty=format:'<li>%s</li>' --abbrev-commit --date=relative -n 7)
+GIT_LOG      = $(shell git log --no-merges --pretty=format:"\r✓ %s" --abbrev-commit --date=relative -n 10 | /usr/bin/php -r 'echo htmlentities(fread( STDIN, 2048 ), ENT_QUOTES, "UTF-8");')
 
 PLIST_BUDDY  = /usr/libexec/PlistBuddy
 
@@ -54,7 +55,7 @@ $(shell curl -s -X POST -d "text_mode=1&url=$(BASE_URL)" http://lexr.us/api/url)
 endef
 
 define qrencode
-$(shell type -P qrencode &>/dev/null && qrencode "$(BASE_URL)" -s 6 -o - | base64 | sed 's/^\(.*\)/<p><img src="data:image\/png;base64,\1"><\/p>/g')
+$(shell type -P qrencode &>/dev/null && qrencode "$(BASE_URL)" -m 0 -s 10 -l H --foreground=0000ee -o - | base64 | sed 's/^\(.*\)/data:image\/png;base64,\1/g')
 endef
 
 define app_title
@@ -75,20 +76,24 @@ endef
 
 define html
 '<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">\
-<title>$(app_title)</title><style type="text/css">body{text-align:center;font-family:"Helvetica";font-size:13px;}ul{text-align:left;}\
-.container{width:280px;margin:0 auto;}h1{margin:0;padding:0;font-size:14px;}.install_button{background-image:-webkit-linear-gradient(top,rgb(126,203,26),rgb(92,149,19));background-origin:padding-box;background-repeat:repeat;-webkit-box-shadow:rgba(0,0,0,0.36) 0px 1px 3px 0px;-webkit-font-smoothing:antialiased;-webkit-user-select:none;background-attachment:scroll;background-clip:border-box;background-color:rgba(0,0,0,0);border-color:#75bc18;border-bottom-left-radius:18px;border-bottom-right-radius:18px;border-bottom-style:none;border-bottom-width:0px;border-left-style:none;border-left-width:0px;border-right-style:none;border-right-width:0px;border-top-left-radius:18px;border-top-right-radius:18px;border-top-style:none;border-top-width:0px;box-shadow:rgba(0,0,0,0.359375) 0px 1px 3px 0px;cursor:pointer;display:inline-block;margin:10px 0;padding:1px;position:relative;-webkit-box-shadow:0 1px 3px rgba(0,0,0,0.36);line-height:50px;margin:.5em auto;}\
-.install_button a{-webkit-box-shadow:rgba(255,255,255,0.25) 0px 1px 0px 0px inset;-webkit-font-smoothing:antialiased;-webkit-user-select:none;background-attachment:scroll;background-clip:border-box;background-color:rgba(0,0,0,0);background-image:-webkit-linear-gradient(top,rgb(195,250,123),rgb(134,216,27) 85%%,rgb(180,231,114));background-origin:padding-box;background-repeat:repeat;border-bottom-color:rgb(255,255,255);border-bottom-left-radius:17px;border-bottom-right-radius:17px;border-bottom-style:none;border-bottom-width:0px;border-left-color:rgb(255,255,255);border-left-style:none;border-left-width:0px;border-right-color:rgb(255,255,255);border-right-style:none;border-right-width:0px;border-top-color:rgb(255,255,255);border-top-left-radius:17px;border-top-right-radius:17px;border-top-style:none;border-top-width:0px;box-shadow:rgba(255,255,255,0.246094) 0px 1px 0px 0px inset;color:#fff;cursor:pointer;display:block;font-size:16px;font-weight:bold;height:36px;line-height:36px;margin:0;padding:0;text-decoration:none;text-shadow:rgba(0,0,0,0.527344) 0px 1px 1px;width:278px;}\
-.icon{border-radius:10px;box-shadow:1px 2px 3px lightgray;width:57px;height:57px;}\
-.release_notes{border:1px solid lightgray;padding:30px 10px 15px 30px;border-radius:8px;overflow:hidden;line-height:1.3em;box-shadow:1px 1px 3px lightgray;}\
-.release_notes:before{font-size:10px;content:"Release Notes";background:lightgray;margin:-31px;float:left;padding:3px 8px;border-radius:4px 0 6px 0;color:white;}\
-footer{font-size:x-small;font-weight:bolder;}</style></head><body><div class="container">\
-<p><img class="icon" src="$(BASE_URL)/icon.png"/></p><h1>$(app_title)</h1>\
-<div class="install_button"><a href="itms-services://?action=download-manifest&amp;url=$(BASE_URL)/$(APP).ipa.plist">INSTALL</a></div>\
-<ul class="release_notes">$(GIT_LOG)</ul>\
+<title>$(app_title)</title><style type="text/css">\
+body{text-align:center;font-family:"Helvetica","Hei";font-weight:lighter;color:#333;font-size:85%;}\
+h1{font-weight:lighter;font-size:1.2em;margin:0;padding:0;}a{color:#00f;text-decoration:none;}\
+.container{width:260px;margin:0 auto;}\
+.install_button{display:block;font-size:1.5em;line-height:44px;margin:.5em auto;background:#eee;}\
+.icon_container{background:url($(qrencode));background-size:260px 260px;width:260px;height:260px;}\
+.icon{border-radius:10px;width:57px;height:57px;margin:110px auto 0 auto;}\
+.release_notes{font-family:"Helvetica","Hei";font-weight:lighter;font-size:.9em;border:1px solid #eee;padding:30px 10px 15px 10px;border-radius:3px;overflow:hidden;text-align:left;line-height:1.3em;}\
+.release_notes:before{font-size:.8em;content:"Release Notes";background:#eee;margin:-31px -12px;float:left;padding:3px 8px;border-radius:3px 0 3px 0;}\
+.qrcode{width:180px;}\
+footer{font-size:.8em;}</style></head><body><div class="container">\
+<h1>$(app_title)</h1>\
+<small>Built on '`date "+%Y-%m-%d %H:%M:%S"`'</small>\
+<p class="icon_container"><img class="icon" src="$(BASE_URL)/icon.png"/></p>\
+<a class="install_button" href="itms-services://?action=download-manifest&amp;url=$(BASE_URL)/$(APP).ipa.plist">INSTALL</a>\
 <p><a href="$(short_url)">$(short_url)</a></p>\
-$(qrencode)\
-<footer>'`date`'</footer>\
-<p><a href="https://github.com/lexrus/ios-makefile">https://github.com/lexrus/ios-makefile</a></p></div></body></html>'
+<pre class="release_notes">$(GIT_LOG)<br/>    ......</pre>\
+<footer>&copy; <a href="https://github.com/lexrus/ios-makefile">iOS-Makefile</a> by <a href="http://lextang.com/">Lex Tang</a></footer></div></body></html>'
 endef
 
 default: clean build package html
