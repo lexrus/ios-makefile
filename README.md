@@ -13,11 +13,11 @@ The universal makefile for my iOS projects distributes IPAs in seconds. (a.k.a. 
 * ```make sort``` --- Sort Xcode project.pbxproj with [sort-Xcode-project-file](http://danieltull.co.uk/blog/2013/09/05/easier-merging-of-xcode-project-files/)
 
 ## Screenshots
-![screen shot 2013-07-03 at 10 59 13 pm](https://f.cloud.github.com/assets/219689/744065/8faf92da-e3f4-11e2-9b97-889543a27fd4.png)
+![CLI](https://f.cloud.github.com/assets/219689/744065/8faf92da-e3f4-11e2-9b97-889543a27fd4.png)
 
-![photo jul 03 10 56 46 pm](https://f.cloud.github.com/assets/219689/744074/af12b422-e3f4-11e2-9ffe-2687d2790b3b.png)
+![iMessage](https://f.cloud.github.com/assets/219689/744074/af12b422-e3f4-11e2-9ffe-2687d2790b3b.png)
 
-![screen shot 2013-07-03 at 10 54 24 pm](https://f.cloud.github.com/assets/219689/744070/a4b57866-e3f4-11e2-96f8-624b1c0c71da.png)
+![Web](https://f.cloud.github.com/assets/219689/1234889/2e66cd68-2990-11e3-9eff-5fca4a392ddb.png)
 
 ## Install
 
