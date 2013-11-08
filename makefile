@@ -22,7 +22,6 @@
 include $(CURDIR)/makefile.cfg
 
 IPA_URL      = $(BASE_URL)/$(APP).ipa
-ICON_NAME    = Icon@2x.png
 BUILD_PATH   = $(shell pwd)/Build
 PAYLOAD_PATH = $(BUILD_PATH)/Payload
 UPLOAD_PATH  = $(BUILD_PATH)/Upload
