@@ -22,7 +22,6 @@
 include $(CURDIR)/makefile.cfg
 
 IPA_URL      = $(BASE_URL)/$(APP).ipa
-ICON_NAME    = Icon@2x.png
 BUILD_PATH   = $(shell pwd)/Build
 PAYLOAD_PATH = $(BUILD_PATH)/Payload
 UPLOAD_PATH  = $(BUILD_PATH)/Upload
@@ -101,11 +100,11 @@ default: clean build package html
 .PHONY: clean
 clean:
 	@echo "${INFO_CLR}>> Cleaning $(APP)...${RESTORE_CLR}${RESULT_CLR}"
-	@xcodebuild -sdk iphoneos -workspace "$(WORKSPACE).xcworkspace" -scheme "$(SCHEME)" -configuration "$(CONFIG)" -jobs 2 clean | tail -n 2 | cat && printf "${RESET_CLR}" && rm -rf Build
+	@xcodebuild -sdk iphoneos -workspace "$(WORKSPACE).xcworkspace" -scheme "$(SCHEME)" -configuration "$(CONFIG)" -jobs 2 clean | tail -n 2 | cat && printf "${RESET_CLR}" && rm -rf "$(BUILD_PATH)"
 
 build:
 	@echo "${INFO_CLR}>> Building $(APP)...${RESTORE_CLR}${RESULT_CLR}"
-	@xcodebuild -sdk iphoneos -workspace "$(WORKSPACE).xcworkspace" -scheme "$(SCHEME)" -configuration "$(CONFIG)" -jobs 6 build | tail -n 2 | cat && printf "${RESET_CLR}"
+	@xcodebuild -sdk iphoneos -workspace "$(WORKSPACE).xcworkspace" -scheme "$(SCHEME)" -configuration "$(CONFIG)" SYMROOT="$(BUILD_PATH)/Products" -jobs 6 build | tail -n 2 | cat && printf "${RESET_CLR}"
 
 show_settings:
 	@xcodebuild -sdk iphoneos -workspace "$(WORKSPACE).xcworkspace" -scheme "$(SCHEME)" -configuration "$(CONFIG)" -showBuildSettings 2>/dev/null | grep "$(SECOND_ARG)"
