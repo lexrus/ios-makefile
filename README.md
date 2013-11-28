@@ -31,7 +31,7 @@ Install [libqrencode](http://fukuchi.org/works/qrencode/) if you need the QRCode
 
 ## How to use?
 
-* Modify makefile.cfg to match your workspace settings.
+* Modify makefile.cfg to match your workspace/project settings.
 * ```make``` to build & package your IPA.
 * ```make upload``` to upload the package to your SFTP server.
 * or ```make serve``` to serve the IPA in your local network.

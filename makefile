@@ -25,10 +25,16 @@ IPA_URL      = $(BASE_URL)/$(APP).ipa
 BUILD_PATH   = $(shell pwd)/Build
 PAYLOAD_PATH = $(BUILD_PATH)/Payload
 UPLOAD_PATH  = $(BUILD_PATH)/Upload
-INFO_FILE    = $(BUILD_PATH)/Products/$(CONFIG)-iphoneos/$(APP).app/Info.plist
 PLIST_FILE   = $(UPLOAD_PATH)/$(APP).ipa.plist
 IPA_FILE     = $(UPLOAD_PATH)/$(APP).ipa
 BUILD_LOG   ?= OFF
+ICON_NAME   ?= Icon@2x.png
+
+ifdef $(WORKSPACE)
+INFO_FILE    = $(BUILD_PATH)/Products/$(CONFIG)-iphoneos/$(APP).app/Info.plist
+else
+INFO_FILE    = $(BUILD_PATH)/Products/$(APP).app/Info.plist
+endif
 
 # Abbreviated Git logs
 GIT_LOG      = $(shell git log --no-merges --pretty=format:"\r✓ %s" --abbrev-commit --date=relative -n 10 | /usr/bin/php -r 'echo htmlentities(fread( STDIN, 2048 ), ENT_QUOTES, "UTF-8");')
@@ -95,26 +101,43 @@ footer{font-size:.8em;}</style></head><body><div class="container">\
 <footer>&copy; <a href="https://github.com/lexrus/ios-makefile">iOS-Makefile</a> by <a href="http://lextang.com/">Lex Tang</a></footer></div></body></html>'
 endef
 
-default: clean build package html
+default: clean build_app package html
 
 .PHONY: clean
 clean:
 	@echo "${INFO_CLR}>> Cleaning $(APP)...${RESTORE_CLR}${RESULT_CLR}"
+ifdef $(WORKSPACE)
 	@xcodebuild -sdk iphoneos -workspace "$(WORKSPACE).xcworkspace" -scheme "$(SCHEME)" -configuration "$(CONFIG)" -jobs 2 clean | tail -n 2 | cat && printf "${RESET_CLR}" && rm -rf "$(BUILD_PATH)"
-
-build:
+else
+	@xcodebuild -sdk iphoneos -project "$(PROJECT).xcodeproj" -scheme "$(SCHEME)" -configuration "$(CONFIG)" -jobs 2 clean | tail -n 2 | cat && printf "${RESET_CLR}" && rm -rf "$(BUILD_PATH)"
+endif
+	
+build_app:
 	@echo "${INFO_CLR}>> Building $(APP)...${RESTORE_CLR}${RESULT_CLR}"
+ifdef $(WORKSPACE)
 	@xcodebuild -sdk iphoneos -workspace "$(WORKSPACE).xcworkspace" -scheme "$(SCHEME)" -configuration "$(CONFIG)" SYMROOT="$(BUILD_PATH)/Products" -jobs 6 build | tail -n 2 | cat && printf "${RESET_CLR}"
+else
+	@xcodebuild -sdk iphoneos -project "$(PROJECT).xcodeproj" -scheme "$(SCHEME)" -configuration "$(CONFIG)" CONFIGURATION_BUILD_DIR="$(BUILD_PATH)/Products" -jobs 6 build | tail -n 2 | cat && printf "${RESET_CLR}"
+endif
 
 show_settings:
+ifdef $(WORKSPACE)
 	@xcodebuild -sdk iphoneos -workspace "$(WORKSPACE).xcworkspace" -scheme "$(SCHEME)" -configuration "$(CONFIG)" -showBuildSettings 2>/dev/null | grep "$(SECOND_ARG)"
+else
+	@xcodebuild -sdk iphoneos -project "$(WORKSPACE).xcodeproj" -scheme "$(SCHEME)" -configuration "$(CONFIG)" -showBuildSettings 2>/dev/null | grep "$(SECOND_ARG)"
+endif
 
 package:
 	@echo "${INFO_CLR}>> PACKAGING $(APP)...${RESTORE_CLR}"
 	@rm -rf "$(PAYLOAD_PATH)" "$(UPLOAD_PATH)"
 	@mkdir -p "$(PAYLOAD_PATH)" "$(UPLOAD_PATH)"
+ifdef $(WORKSPACE)
 	@cp "$(BUILD_PATH)/Products/$(CONFIG)-iphoneos/$(APP).app/$(ICON_NAME)" "$(UPLOAD_PATH)/icon.png"
 	@cp -r "$(BUILD_PATH)/Products/$(CONFIG)-iphoneos/$(APP).app" "$(PAYLOAD_PATH)"
+else
+	@cp "$(BUILD_PATH)/Products/$(APP).app/$(ICON_NAME)" "$(UPLOAD_PATH)/icon.png"
+	@cp -r "$(BUILD_PATH)/Products/$(APP).app" "$(PAYLOAD_PATH)"
+endif
 	@cd "$(BUILD_PATH)"; zip -rq "$(IPA_FILE)" "Payload" && rm -rf "$(PAYLOAD_PATH)"
 	@echo "${RESULT_CLR}** PACKAGE SUCCEEDED **${RESET_CLR}\n"
 
