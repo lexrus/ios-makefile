@@ -1,3 +1,10 @@
+# iOS Makefile by Lex Tang
+# https://github.com/lexrus/ios-makefile
+
+# You can update this file with the following command:
+# curl -OL http://git.io/makefile
+
+
 # The MIT License (MIT)
 # Copyright © 2013 Lex Tang, http://LexTang.com
 
@@ -107,9 +114,9 @@ default: clean build_app package html
 clean:
 	@echo "${INFO_CLR}>> Cleaning $(APP)...${RESTORE_CLR}${RESULT_CLR}"
 ifdef $(WORKSPACE)
-	@xcodebuild -sdk iphoneos -workspace "$(WORKSPACE).xcworkspace" -scheme "$(SCHEME)" -configuration "$(CONFIG)" -jobs 2 clean | tail -n 2 | cat && printf "${RESET_CLR}" && rm -rf "$(BUILD_PATH)"
+	@xcodebuild -sdk iphoneos -workspace "$(WORKSPACE).xcworkspace" -scheme "$(SCHEME)" -configuration "$(CONFIG)" -jobs 2 clean 2>/dev/null | tail -n 2 | cat && printf "${RESET_CLR}" && rm -rf "$(BUILD_PATH)"
 else
-	@xcodebuild -sdk iphoneos -project "$(PROJECT).xcodeproj" -scheme "$(SCHEME)" -configuration "$(CONFIG)" -jobs 2 clean | tail -n 2 | cat && printf "${RESET_CLR}" && rm -rf "$(BUILD_PATH)"
+	@xcodebuild -sdk iphoneos -project "$(PROJECT).xcodeproj" -scheme "$(SCHEME)" -configuration "$(CONFIG)" -jobs 2 clean 2>/dev/null | tail -n 2 | cat && printf "${RESET_CLR}" && rm -rf "$(BUILD_PATH)"
 endif
 	
 build_app:
