@@ -37,7 +37,7 @@ IPA_FILE     = $(UPLOAD_PATH)/$(APP).ipa
 BUILD_LOG   ?= OFF
 ICON_NAME   ?= Icon@2x.png
 
-ifdef $(WORKSPACE)
+ifdef WORKSPACE
 INFO_FILE    = $(BUILD_PATH)/Products/$(CONFIG)-iphoneos/$(APP).app/Info.plist
 else
 INFO_FILE    = $(BUILD_PATH)/Products/$(APP).app/Info.plist
@@ -113,7 +113,7 @@ default: clean build_app package html
 .PHONY: clean
 clean:
 	@echo "${INFO_CLR}>> Cleaning $(APP)...${RESTORE_CLR}${RESULT_CLR}"
-ifdef $(WORKSPACE)
+ifdef WORKSPACE
 	@xcodebuild -sdk iphoneos -workspace "$(WORKSPACE).xcworkspace" -scheme "$(SCHEME)" -configuration "$(CONFIG)" -jobs 2 clean 2>/dev/null | tail -n 2 | cat && printf "${RESET_CLR}" && rm -rf "$(BUILD_PATH)"
 else
 	@xcodebuild -sdk iphoneos -project "$(PROJECT).xcodeproj" -scheme "$(SCHEME)" -configuration "$(CONFIG)" -jobs 2 clean 2>/dev/null | tail -n 2 | cat && printf "${RESET_CLR}" && rm -rf "$(BUILD_PATH)"
@@ -121,14 +121,14 @@ endif
 	
 build_app:
 	@echo "${INFO_CLR}>> Building $(APP)...${RESTORE_CLR}${RESULT_CLR}"
-ifdef $(WORKSPACE)
+ifdef WORKSPACE
 	@xcodebuild -sdk iphoneos -workspace "$(WORKSPACE).xcworkspace" -scheme "$(SCHEME)" -configuration "$(CONFIG)" SYMROOT="$(BUILD_PATH)/Products" -jobs 6 build | tail -n 2 | cat && printf "${RESET_CLR}"
 else
 	@xcodebuild -sdk iphoneos -project "$(PROJECT).xcodeproj" -scheme "$(SCHEME)" -configuration "$(CONFIG)" CONFIGURATION_BUILD_DIR="$(BUILD_PATH)/Products" -jobs 6 build | tail -n 2 | cat && printf "${RESET_CLR}"
 endif
 
 show_settings:
-ifdef $(WORKSPACE)
+ifdef WORKSPACE
 	@xcodebuild -sdk iphoneos -workspace "$(WORKSPACE).xcworkspace" -scheme "$(SCHEME)" -configuration "$(CONFIG)" -showBuildSettings 2>/dev/null | grep "$(SECOND_ARG)"
 else
 	@xcodebuild -sdk iphoneos -project "$(WORKSPACE).xcodeproj" -scheme "$(SCHEME)" -configuration "$(CONFIG)" -showBuildSettings 2>/dev/null | grep "$(SECOND_ARG)"
@@ -138,7 +138,7 @@ package:
 	@echo "${INFO_CLR}>> PACKAGING $(APP)...${RESTORE_CLR}"
 	@rm -rf "$(PAYLOAD_PATH)" "$(UPLOAD_PATH)"
 	@mkdir -p "$(PAYLOAD_PATH)" "$(UPLOAD_PATH)"
-ifdef $(WORKSPACE)
+ifdef WORKSPACE
 	@cp "$(BUILD_PATH)/Products/$(CONFIG)-iphoneos/$(APP).app/$(ICON_NAME)" "$(UPLOAD_PATH)/icon.png"
 	@cp -r "$(BUILD_PATH)/Products/$(CONFIG)-iphoneos/$(APP).app" "$(PAYLOAD_PATH)"
 else
