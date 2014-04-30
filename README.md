@@ -23,7 +23,7 @@ The universal makefile for my iOS projects distributes IPAs in seconds.
 
 ![iMessage](https://f.cloud.github.com/assets/219689/744074/af12b422-e3f4-11e2-9ffe-2687d2790b3b.png)
 
-<img src="https://f.cloud.github.com/assets/219689/1234889/2e66cd68-2990-11e3-9eff-5fca4a392ddb.png" alt="Web" style="width:320px"/>
+<img src="https://f.cloud.github.com/assets/219689/1234889/2e66cd68-2990-11e3-9eff-5fca4a392ddb.png" alt="Web" width="320"/>
 
 ## Install
 
