@@ -218,6 +218,26 @@ imessage:
 		-e "end tell" ; \
 	done
 
+testflight:
+	@echo "${INFO_CLR}>> Compressing ${RESET_CLR}${RESULT_CLR}$(APP).app.dSYM.zip...${RESET_CLR}" ;
+ifdef WORKSPACE
+	@cd "$(BUILD_PATH)/Products/$(CONFIG)-iphoneos/"; zip -rq "$(BUILD_PATH)/$(APP).app.dSYM.zip" "$(APP).app.dSYM"
+else
+	@cd "$(BUILD_PATH)/Products/"; zip -rq "$(BUILD_PATH)/$(APP).app.dSYM.zip" "$(APP).app.dSYM"
+endif
+	@echo "${INFO_CLR}>> Uploading ${RESET_CLR}${RESULT_CLR}$(APP).app.dSYM.zip...${RESET_CLR}" ;
+	@curl http://testflightapp.com/api/builds.json \
+	    -F file=@"$(IPA_FILE)" \
+	    -F dsym=@"$(BUILD_PATH)/$(APP).app.dSYM.zip" \
+	    -F api_token="$(TESTFLIGHT_API_TOKEN)" \
+	    -F team_token="$(TESTFLIGHT_TEAM_TOKEN)" \
+	    -F notes="$(subst '\\r','%A0',$(GIT_LOG))" \
+	    -F notify=True -o $(BUILD_PATH)/testflight_upload_result.log 2>&1
+	@echo "${RESULT_CLR}** UPLOAD SUCCEEDED **\n>> INSTALL URL: "
+	@cat $(BUILD_PATH)/testflight_upload_result.log \
+		| grep -o 'https*://[^\"]*testflightapp.com/install/[^\"]*' \
+		| cat && printf "${RESET_CLR}"
+
 sort:
 	@ls .sort-Xcode-project-file 2>/dev/null >/dev/null||curl -L https://raw.github.com/WebKit/webkit/master/Tools/Scripts/sort-Xcode-project-file -o .sort-Xcode-project-file
 	@perl .sort-Xcode-project-file "$(APP).xcodeproj/project.pbxproj" && echo "${RESULT_CLR}** $(APP).xcodeproj/project.pbxproj was sorted **${RESET_CLR}"

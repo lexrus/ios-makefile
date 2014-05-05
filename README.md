@@ -15,7 +15,7 @@ The universal makefile for my iOS projects distributes IPAs in seconds.
 - [x] ```make show_settings PRODUCT_SETTINGS_PATH``` or ```make show_settings | grep FLAG.*``` --- Show build settings
 - [x] ```make sort``` --- Sort Xcode project.pbxproj with [sort-Xcode-project-file](http://danieltull.co.uk/blog/2013/09/05/easier-merging-of-xcode-project-files/)
 - [ ] ```make gmail```
-- [ ] ```make testflight```
+- [x] ```make testflight```
 - [ ] ```make fir```
 - [ ] ```make hockeyapp```
 - [ ] ```make dropbox```
