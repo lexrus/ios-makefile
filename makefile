@@ -133,9 +133,9 @@ endif
 build_app:
 	@echo "${INFO_CLR}>> Building $(APP)...${RESTORE_CLR}${RESULT_CLR}"
 ifdef WORKSPACE
-	@xcodebuild -sdk iphoneos -workspace "$(WORKSPACE).xcworkspace" -scheme "$(SCHEME)" -configuration "$(CONFIG)" SYMROOT="$(BUILD_PATH)/Products" -jobs 6 build | tail -n 2 | cat && printf "${RESET_CLR}"
+	@xcodebuild -sdk iphoneos -workspace "$(WORKSPACE).xcworkspace" -scheme "$(SCHEME)" -configuration "$(CONFIG)" SYMROOT="$(BUILD_PATH)/Products" -jobs 6 build 2>/dev/null | tail -n 2 | cat && printf "${RESET_CLR}"
 else
-	@xcodebuild -sdk iphoneos -project "$(PROJECT).xcodeproj" -scheme "$(SCHEME)" -configuration "$(CONFIG)" CONFIGURATION_BUILD_DIR="$(BUILD_PATH)/Products" -jobs 6 build | tail -n 2 | cat && printf "${RESET_CLR}"
+	@xcodebuild -sdk iphoneos -project "$(PROJECT).xcodeproj" -scheme "$(SCHEME)" -configuration "$(CONFIG)" CONFIGURATION_BUILD_DIR="$(BUILD_PATH)/Products" -jobs 6 build 2>/dev/null | tail -n 2 | cat && printf "${RESET_CLR}"
 endif
 
 show_settings:
