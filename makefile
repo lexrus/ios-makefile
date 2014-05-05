@@ -36,6 +36,7 @@ PLIST_FILE   = $(UPLOAD_PATH)/$(APP).ipa.plist
 IPA_FILE     = $(UPLOAD_PATH)/$(APP).ipa
 BUILD_LOG   ?= OFF
 ICON_NAME   ?= Icon@2x.png
+LEXR_US     ?= YES
 
 ifdef WORKSPACE
 INFO_FILE    = $(BUILD_PATH)/Products/$(CONFIG)-iphoneos/$(APP).app/Info.plist
@@ -57,14 +58,23 @@ ifneq (,$(filter-out $@,$(MAKECMDGOALS)))
 SECOND_ARG = $(filter-out $@,$(MAKECMDGOALS))
 endif
 
+define googl
+$(shell curl -s -d "{'longUrl':'$(BASE_URL)'}" -H 'Content-Type: application/json' https://www.googleapis.com/urlshortener/v1/url | grep -o 'http://goo.gl/[^\"]*')
+endef
 
-#define googl
-#$(shell curl -s -d "{'longUrl':'$(BASE_URL)'}" -H 'Content-Type: application/json' https://www.googleapis.com/urlshortener/v1/url | grep -o 'http://goo.gl/[^\"]*')
-#endef
-
-define short_url
+define lexr_us
 $(shell curl -s -X POST -d "text_mode=1&url=$(BASE_URL)" http://lexr.us/api/url)
 endef
+
+ifneq (,$(findstring YES,$(LEXR_US)))
+define short_url
+$(call lexr_us)
+endef
+else
+define short_url
+$(call googl)
+endef
+endif
 
 define qrencode
 $(shell type -P qrencode &>/dev/null && qrencode "$(BASE_URL)" -m 0 -s 10 -l H --foreground=0000ee -o - | base64 | sed 's/^\(.*\)/data:image\/png;base64,\1/g')
