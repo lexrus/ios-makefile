@@ -1,7 +1,7 @@
 # iOS Makefile (a.k.a. OTA makefile)
 The universal makefile for my iOS projects distributes IPAs in seconds.
 
-![Screenshots](https://cloud.githubusercontent.com/assets/219689/2875658/aba4b514-d422-11e3-8a71-6a275297aa45.png)
+![Screenshots](https://cloud.githubusercontent.com/assets/219689/2875724/fa99b87a-d424-11e3-8ed6-cc6522b7f257.png)
 
 ## Features
 - [x] Git log as release notes
