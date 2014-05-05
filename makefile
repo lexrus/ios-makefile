@@ -89,19 +89,20 @@ endef
 define html
 '<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">\
 <title>$(app_title)</title><style type="text/css">\
-body{text-align:center;font-family:"Helvetica","Hei";font-weight:lighter;color:#333;font-size:85%;}\
-h1{font-weight:lighter;font-size:1.2em;margin:0;padding:0;}a{color:#00f;text-decoration:none;}\
-.container{width:260px;margin:0 auto;}\
-.install_button{display:block;font-size:1.5em;line-height:44px;margin:.5em auto;background:#eee;}\
-.icon_container{background:url($(qrencode));background-size:260px 260px;width:260px;height:260px;}\
-.icon{border-radius:10px;width:57px;height:57px;margin:110px auto 0 auto;}\
-.release_notes{font-family:"Helvetica","Hei";font-weight:lighter;font-size:.9em;border:1px solid #eee;padding:30px 10px 15px 10px;border-radius:3px;overflow:hidden;text-align:left;line-height:1.3em;}\
-.release_notes:before{font-size:.8em;content:"Release Notes";background:#eee;margin:-31px -12px;float:left;padding:3px 8px;border-radius:3px 0 3px 0;}\
-.qrcode{width:180px;}\
-footer{font-size:.8em;}</style></head><body><div class="container">\
+body{text-align:center;font-family:"Helvetica","Hei";font-weight:lighter;color:#333;font-size:85%}\
+h1{font-weight:lighter;font-size:1.2em;margin:0;padding:0}a{color:#00f;text-decoration:none}\
+.container{width:260px;margin:0 auto}\
+.install_button{display:block;font-size:1.5em;line-height:44px;margin:.5em auto;background:#eee}\
+.icon_container{width:260px;height:260px}\
+.icon_container .qrcode_img{width:260px;height:260px}\
+.icon_container .icon{position:absolute;border-radius:10px;width:57px;height:57px;margin:110px auto 0 auto}\
+.release_notes{font-family:"Helvetica","Hei";font-weight:lighter;font-size:.9em;border:1px solid #eee;padding:30px 10px 15px 10px;border-radius:3px;overflow:hidden;text-align:left;line-height:1.3em}\
+.release_notes:before{font-size:.8em;content:"Release Notes";background:#eee;margin:-31px -12px;float:left;padding:3px 8px;border-radius:3px 0 3px 0}.qrcode{width:180px}footer{font-size:.8em}\
+@media print{body{font-size:95%;padding:5em}a{color:#000}.qrcode_img{filter:url(filters.svg#grayscale);filter:gray;-webkit-filter:grayscale(1)}.install_button{display:none}}\
+</style></head><body><div class="container">\
 <h1>$(app_title)</h1>\
 <small>Built on '`date "+%Y-%m-%d %H:%M:%S"`'</small>\
-<p class="icon_container"><img class="icon" src="$(BASE_URL)/icon.png" onerror="this.style.display=&#39;none&#39;"/></p>\
+<p class="icon_container"><img class="qrcode_img" src="$(qrencode)"/><img class="icon" src="$(BASE_URL)/icon.png" onerror="this.style.display=&#39;none&#39;"/></p>\
 <a class="install_button" href="itms-services://?action=download-manifest&amp;url=$(BASE_URL)/$(APP).ipa.plist">INSTALL</a>\
 <p><a href="$(short_url)">$(short_url)</a></p>\
 <pre class="release_notes">$(GIT_LOG)<br/>    ......</pre>\

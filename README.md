@@ -4,7 +4,8 @@ The universal makefile for my iOS projects distributes IPAs in seconds.
 ## Features
 - [x] Git log as release notes
 - [x] Shorten URL with my open source shortener: http://lexr.us or goo.gl
-- [x] QRCode of URL
+- [x] QRCode of URL --- requires [libqrencode](http://fukuchi.org/works/qrencode/)
+- [x] Printer friendly
 - [x] ```make upload``` --- Upload to SFTP via rsync
 - [x] ```make send_email``` --- Send emails with Mailgun
 - [x] ```make serve``` and ```make stop_serve``` --- Local OTA server with __Bonjour__
