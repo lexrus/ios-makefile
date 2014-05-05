@@ -1,6 +1,8 @@
 # iOS Makefile (a.k.a. OTA makefile)
 The universal makefile for my iOS projects distributes IPAs in seconds.
 
+![Screenshots](https://cloud.githubusercontent.com/assets/219689/2875658/aba4b514-d422-11e3-8a71-6a275297aa45.png)
+
 ## Features
 - [x] Git log as release notes
 - [x] Shorten URL with my open source shortener: http://lexr.us or https://goo.gl
@@ -18,13 +20,6 @@ The universal makefile for my iOS projects distributes IPAs in seconds.
 - [ ] ```make hockeyapp```
 - [ ] ```make dropbox```
 - [ ] Version subfix for IPAs
-
-## Screenshots
-![CLI](https://f.cloud.github.com/assets/219689/744065/8faf92da-e3f4-11e2-9b97-889543a27fd4.png)
-
-![iMessage](https://f.cloud.github.com/assets/219689/744074/af12b422-e3f4-11e2-9ffe-2687d2790b3b.png)
-
-<img src="https://f.cloud.github.com/assets/219689/1234889/2e66cd68-2990-11e3-9eff-5fca4a392ddb.png" alt="Web" width="320"/>
 
 ## Install
 
