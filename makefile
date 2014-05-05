@@ -218,24 +218,43 @@ imessage:
 		-e "end tell" ; \
 	done
 
-testflight:
+zip_dsym:
 	@echo "${INFO_CLR}>> Compressing ${RESET_CLR}${RESULT_CLR}$(APP).app.dSYM.zip...${RESET_CLR}" ;
 ifdef WORKSPACE
 	@cd "$(BUILD_PATH)/Products/$(CONFIG)-iphoneos/"; zip -rq "$(BUILD_PATH)/$(APP).app.dSYM.zip" "$(APP).app.dSYM"
 else
 	@cd "$(BUILD_PATH)/Products/"; zip -rq "$(BUILD_PATH)/$(APP).app.dSYM.zip" "$(APP).app.dSYM"
 endif
+
+testflight: zip_dsym
 	@echo "${INFO_CLR}>> Uploading ${RESET_CLR}${RESULT_CLR}$(APP).app.dSYM.zip...${RESET_CLR}" ;
 	@curl http://testflightapp.com/api/builds.json \
-	    -F file=@"$(IPA_FILE)" \
-	    -F dsym=@"$(BUILD_PATH)/$(APP).app.dSYM.zip" \
-	    -F api_token="$(TESTFLIGHT_API_TOKEN)" \
-	    -F team_token="$(TESTFLIGHT_TEAM_TOKEN)" \
-	    -F notes="$(subst '\\r','%A0',$(GIT_LOG))" \
-	    -F notify=True -o $(BUILD_PATH)/testflight_upload_result.log 2>&1
+		-F file=@"$(IPA_FILE)" \
+		-F dsym=@"$(BUILD_PATH)/$(APP).app.dSYM.zip" \
+		-F api_token="$(TESTFLIGHT_API_TOKEN)" \
+		-F team_token="$(TESTFLIGHT_TEAM_TOKEN)" \
+		-F notes="$(subst '\\r','%A0',$(GIT_LOG))" \
+		-F notify=True \
+		-o $(BUILD_PATH)/testflight_upload_result.log 2>&1
 	@echo "${RESULT_CLR}** UPLOAD SUCCEEDED **\n>> INSTALL URL: "
 	@cat $(BUILD_PATH)/testflight_upload_result.log \
 		| grep -o 'https*://[^\"]*testflightapp.com/install/[^\"]*' \
+		| cat && printf "${RESET_CLR}"
+
+hockey: zip_dsym
+	@echo "${INFO_CLR}>> Uploading ${RESET_CLR}${RESULT_CLR}$(APP).app.dSYM.zip...${RESET_CLR}" ;
+	@curl https://rink.hockeyapp.net/api/2/apps/upload \
+		-F "status=2" \
+		-F notify=1 \
+		-F notes="$(subst '\\r','%A0',$(GIT_LOG))" \
+		-F notes_type=0 \
+		-F ipa=@"$(IPA_FILE)" \
+		-F dsym=@"$(BUILD_PATH)/$(APP).app.dSYM.zip" \
+		-H X-HockeyAppToken: "$(HOCKEY_APP_API_TOKEN)" \
+		-o $(BUILD_PATH)/hockey_upload_result.log 2>&1
+	@echo "${RESULT_CLR}** UPLOAD SUCCEEDED **\n>> INSTALL URL: "
+	@cat $(BUILD_PATH)/hockey_upload_result.log \
+		| grep -o 'https*://[^\"]*.hockeyapp.net/apps/[^\"]*' \
 		| cat && printf "${RESET_CLR}"
 
 sort:
