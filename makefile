@@ -101,7 +101,7 @@ h1{font-weight:lighter;font-size:1.2em;margin:0;padding:0;}a{color:#00f;text-dec
 footer{font-size:.8em;}</style></head><body><div class="container">\
 <h1>$(app_title)</h1>\
 <small>Built on '`date "+%Y-%m-%d %H:%M:%S"`'</small>\
-<p class="icon_container"><img class="icon" src="$(BASE_URL)/icon.png"/></p>\
+<p class="icon_container"><img class="icon" src="$(BASE_URL)/icon.png" onerror="this.style.display=&#39;none&#39;"/></p>\
 <a class="install_button" href="itms-services://?action=download-manifest&amp;url=$(BASE_URL)/$(APP).ipa.plist">INSTALL</a>\
 <p><a href="$(short_url)">$(short_url)</a></p>\
 <pre class="release_notes">$(GIT_LOG)<br/>    ......</pre>\
@@ -139,10 +139,10 @@ package:
 	@rm -rf "$(PAYLOAD_PATH)" "$(UPLOAD_PATH)"
 	@mkdir -p "$(PAYLOAD_PATH)" "$(UPLOAD_PATH)"
 ifdef WORKSPACE
-	@cp "$(BUILD_PATH)/Products/$(CONFIG)-iphoneos/$(APP).app/$(ICON_NAME)" "$(UPLOAD_PATH)/icon.png"
+	-@[ -e "$(BUILD_PATH)/Products/$(CONFIG)-iphoneos/$(APP).app/$(ICON_NAME)" ] && cp "$(BUILD_PATH)/Products/$(CONFIG)-iphoneos/$(APP).app/$(ICON_NAME)" "$(UPLOAD_PATH)/icon.png 2>/dev/null"
 	@cp -r "$(BUILD_PATH)/Products/$(CONFIG)-iphoneos/$(APP).app" "$(PAYLOAD_PATH)"
 else
-	@cp "$(BUILD_PATH)/Products/$(APP).app/$(ICON_NAME)" "$(UPLOAD_PATH)/icon.png"
+	-@[ -e "$(BUILD_PATH)/Products/$(APP).app/$(ICON_NAME)" ] && cp "$(BUILD_PATH)/Products/$(APP).app/$(ICON_NAME)" "$(UPLOAD_PATH)/icon.png"
 	@cp -r "$(BUILD_PATH)/Products/$(APP).app" "$(PAYLOAD_PATH)"
 endif
 	@cd "$(BUILD_PATH)"; zip -rq "$(IPA_FILE)" "Payload" && rm -rf "$(PAYLOAD_PATH)"
