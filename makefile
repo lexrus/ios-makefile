@@ -119,6 +119,23 @@ h1{font-weight:lighter;font-size:1.2em;margin:0;padding:0}a{color:#00f;text-deco
 <footer>&copy; <a href="https://github.com/lexrus/ios-makefile">iOS-Makefile</a> by <a href="http://lextang.com/">Lex Tang</a></footer></div></body></html>'
 endef
 
+define cert_conf
+[ req ]
+prompt = no
+encrypt_key = no
+distinguished_name = req_distinguished_name
+[ req_distinguished_name ]
+countryName = 'CN'
+stateOrProvinceName = 'Shanghai'
+localityName = 'Shanghai'
+postalCode = '200002'
+streetAddress = 'East NANJING Rd.'
+organizationName = 'LexTang.com'
+organizationalUnitName = 'ios-makefile'
+commonName = 'ios-makefile'
+emailAddress = 'ios-makefile@nsnotfound.com'
+endef
+
 default: clean build_app package html
 
 .PHONY: clean
@@ -200,9 +217,14 @@ send_email:
 		-F "html=<$(UPLOAD_PATH)/index.html"
 	@echo "${RESULT_CLR}** EMAILS SENT **${RESET_CLR}"
 
-serve:
+export cert_conf
+gen_cert:
+	@echo "$$cert_conf" > /tmp/cert.conf
+	@openssl req -new -x509 -keyout /tmp/server.pem -out /tmp/server.pem -days 365 -nodes -config /tmp/cert.conf
+
+serve: gen_cert
 	@echo "${RESULT_CLR}>> $(APP) Server $(BASE_URL) [STARTED]${RESET_CLR}"
-	@twistd -o -l /tmp/twistd.log web --path=$(UPLOAD_PATH) --port=$(BASE_PORT)
+	@twistd -o -l /tmp/twistd.log web --path=$(UPLOAD_PATH) --https=$(BASE_PORT) -c /tmp/server.pem -k /tmp/server.pem
 
 stop_serve:
 	@echo "${RESULT_CLR}>> $(APP) Server [STOPPED]${RESET_CLR}"
