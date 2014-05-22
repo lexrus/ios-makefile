@@ -32,10 +32,12 @@ IPA_URL      = $(BASE_URL)/$(APP).ipa
 BUILD_PATH   = $(shell pwd)/Build
 PAYLOAD_PATH = $(BUILD_PATH)/Payload
 UPLOAD_PATH  = $(BUILD_PATH)/Upload
+PLIST_SRC    = $(shell find . -name '*-Info.plist' -type f | head -n 1 )
 PLIST_FILE   = $(UPLOAD_PATH)/$(APP).ipa.plist
 IPA_FILE     = $(UPLOAD_PATH)/$(APP).ipa
 BUILD_LOG   ?= OFF
-ICON_NAME   ?= Icon@2x.png
+ICON_PATH    = $(shell find . -name AppIcon.appiconset -type d )
+ICON_FILE    = $(shell find `find . -name AppIcon.appiconset -type d` -name Contents.json -type f | xargs grep -o 'Icon-60@2x.png')
 LEXR_US     ?= YES
 
 ifdef WORKSPACE
@@ -47,6 +49,9 @@ endif
 # Abbreviated Git logs
 GIT_LOG      = $(shell git log --no-merges --pretty=format:"\r✓ %s" --abbrev-commit --date=relative -n 10 | /usr/bin/php -r 'echo htmlentities(fread( STDIN, 2048 ), ENT_QUOTES, "UTF-8");')
 
+COMMIT       = $(shell git rev-parse --short HEAD)
+BRANCH       = $(shell git rev-parse --abbrev-ref HEAD)
+version      = `/usr/libexec/PlistBuddy -c "Print CFBundleVersion" "${INFOPLIST_FILE}"`
 PLIST_BUDDY  = /usr/libexec/PlistBuddy
 
 INFO_CLR     = \033[01;33m
@@ -76,6 +81,16 @@ $(call googl)
 endef
 endif
 
+ifdef WORKSPACE
+define IPA_BUILD_FOLDER
+$(BUILD_PATH)/Products/$(CONFIG)-iphoneos/$(APP).app
+endef
+else
+define IPA_BUILD_FOLDER
+$(BUILD_PATH)/Products/$(APP).app
+endef
+endif
+
 define qrencode
 $(shell type -P qrencode &>/dev/null && qrencode "$(BASE_URL)" -m 0 -s 10 -l H --foreground=0000ee -o - | base64 | sed 's/^\(.*\)/data:image\/png;base64,\1/g')
 endef
@@ -89,7 +104,7 @@ $(shell $(PLIST_BUDDY) -c 'Print :CFBundleDisplayName' '$(INFO_FILE)')
 endef
 
 define app_short_version
-$(shell $(PLIST_BUDDY) -c 'Print :CFBundleShortVersionString' '$(INFO_FILE)')
+$(shell $(PLIST_BUDDY) -c 'Print :CFBundleShortVersionString' '$(PLIST_SRC)')
 endef
 
 define app_build_version
@@ -105,14 +120,14 @@ h1{font-weight:lighter;font-size:1.2em;margin:0;padding:0}a{color:#00f;text-deco
 .install_button{display:block;font-size:1.5em;line-height:44px;margin:.5em auto;background:#eee}\
 .icon_container{width:260px;height:260px}\
 .icon_container .qrcode_img{width:260px;height:260px}\
-.icon_container .icon{position:absolute;border-radius:10px;width:57px;height:57px;margin:110px auto 0 auto}\
+.icon_container .icon{position:absolute;border-radius:10px;width:57px;height:57px;margin:101px auto 0 101px}\
 .release_notes{font-family:"Helvetica","Hei";font-weight:lighter;font-size:.9em;border:1px solid #eee;padding:30px 10px 15px 10px;border-radius:3px;overflow:hidden;text-align:left;line-height:1.3em}\
 .release_notes:before{font-size:.8em;content:"Release Notes";background:#eee;margin:-31px -12px;float:left;padding:3px 8px;border-radius:3px 0 3px 0}.qrcode{width:180px}footer{font-size:.8em}\
 @media print{body{font-size:95%;padding:5em}a{color:#000}.qrcode_img{filter:url(filters.svg#grayscale);filter:gray;-webkit-filter:grayscale(1)}.install_button{display:none}}\
 </style></head><body><div class="container">\
 <h1>$(app_title)</h1>\
 <small>Built on '`date "+%Y-%m-%d %H:%M:%S"`'</small>\
-<p class="icon_container"><img class="qrcode_img" src="$(qrencode)"/><img class="icon" src="$(BASE_URL)/icon.png" onerror="this.style.display=&#39;none&#39;"/></p>\
+<p class="icon_container"><img class="icon" src="$(BASE_URL)/icon.png" onerror="this.style.display=&#39;none&#39;"/><img class="qrcode_img" src="$(qrencode)"/></p>\
 <a class="install_button" href="itms-services://?action=download-manifest&amp;url=$(BASE_URL)/$(APP).ipa.plist">INSTALL</a>\
 <p><a href="$(short_url)">$(short_url)</a></p>\
 <pre class="release_notes">$(GIT_LOG)<br/>    ......</pre>\
@@ -136,7 +151,53 @@ commonName = 'ios-makefile'
 emailAddress = 'ios-makefile@nsnotfound.com'
 endef
 
-default: clean build_app package html
+define icon_version_php
+<?php
+$$ver_txt = $$_ENV['ver'] ?: "$(app_short_version) $(BRANCH)";
+$$cmt_txt = $$_ENV['cmt'] ?: "@$(COMMIT)";
+$$icn = $$_ENV['icn'] ?: "$(ICON_PATH)/$(ICON_FILE)";
+$$fnt = $$_ENV['fnt'] ?: '/Library/Fonts/Verdana Bold.ttf';
+$$fnt_size = $$_ENV['fnt_size'] ?: 12;
+$$out = $$_ENV['o'] ?: "$(ICON_PATH)/$(ICON_FILE)";
+
+$$img = imagecreatefrompng($$icn);
+if (!$$img) die();
+imageantialias($$img, false);
+$$img_width = imagesx($$img);
+$$img_height = imagesy($$img);
+$$txt_padding = $$fnt_size / 3;
+
+$$tag_height = $$fnt_size * 3;
+$$tag_bg = imagecolorallocatealpha($$img, 0, 0, 0, 64);
+imagefilledrectangle($$img, 0, $$img_height - $$tag_height, $$img_width, $$img_height, $$tag_bg);
+
+$$tag_fg = imagecolorallocate($$img, 255, 255, 255);
+$$tag_shadow = imagecolorallocate($$img, 0, 0, 0);
+
+$$ver_txt_bounds = imagettfbbox($$fnt_size, 0, $$fnt, $$ver_txt);
+$$ver_txt_width = $$ver_txt_bounds[2];
+$$ver_txt_height = $$ver_txt_bounds[3] - $$ver_txt_bounds[5];
+
+$$cmt_txt_bounds = imagettfbbox($$fnt_size, 0, $$fnt, $$cmt_txt);
+$$cmt_txt_width = $$cmt_txt_bounds[2];
+$$cmt_txt_height = $$cmt_txt_bounds[3] - $$cmt_txt_bounds[5];
+
+$$txt_margin = ($$tag_height - $$ver_txt_height - $$cmt_txt_height) / 2;
+
+$$ver_txt_y = $$img_height - $$tag_height + $$txt_margin + $$ver_txt_height;
+$$cmt_txt_y = $$ver_txt_y + $$cmt_txt_height;
+
+imagettftext($$img, $$fnt_size, 0, ($$img_width - $$ver_txt_width) / 2, $$ver_txt_y + 1, $$tag_shadow, $$fnt, $$ver_txt);
+imagettftext($$img, $$fnt_size, 0, ($$img_width - $$ver_txt_width) / 2, $$ver_txt_y, $$tag_fg, $$fnt, $$ver_txt);
+imagettftext($$img, $$fnt_size, 0, ($$img_width - $$cmt_txt_width) / 2, $$cmt_txt_y + 1, $$tag_shadow, $$fnt, $$cmt_txt);
+imagettftext($$img, $$fnt_size, 0, ($$img_width - $$cmt_txt_width) / 2, $$cmt_txt_y, $$tag_fg, $$fnt, $$cmt_txt);
+
+imagepng($$img, $$out);
+imagedestroy($$img);
+?>
+endef
+
+default: clean icon_backup icon_version build_app package icon_restore html
 
 .PHONY: clean
 clean:
@@ -166,15 +227,21 @@ package:
 	@echo "${INFO_CLR}>> PACKAGING $(APP)...${RESTORE_CLR}"
 	@rm -rf "$(PAYLOAD_PATH)" "$(UPLOAD_PATH)"
 	@mkdir -p "$(PAYLOAD_PATH)" "$(UPLOAD_PATH)"
-ifdef WORKSPACE
-	-@[ -e "$(BUILD_PATH)/Products/$(CONFIG)-iphoneos/$(APP).app/$(ICON_NAME)" ] && cp "$(BUILD_PATH)/Products/$(CONFIG)-iphoneos/$(APP).app/$(ICON_NAME)" "$(UPLOAD_PATH)/icon.png 2>/dev/null"
-	@cp -r "$(BUILD_PATH)/Products/$(CONFIG)-iphoneos/$(APP).app" "$(PAYLOAD_PATH)"
-else
-	-@[ -e "$(BUILD_PATH)/Products/$(APP).app/$(ICON_NAME)" ] && cp "$(BUILD_PATH)/Products/$(APP).app/$(ICON_NAME)" "$(UPLOAD_PATH)/icon.png"
-	@cp -r "$(BUILD_PATH)/Products/$(APP).app" "$(PAYLOAD_PATH)"
-endif
+	-@[ -e "$(ICON_PATH)/$(ICON_FILE)" ] && cp "$(ICON_PATH)/$(ICON_FILE)" "$(UPLOAD_PATH)/icon.png" 2>/dev/null
+	@cp -r "$(IPA_BUILD_FOLDER)" "$(PAYLOAD_PATH)"
 	@cd "$(BUILD_PATH)"; zip -rq "$(IPA_FILE)" "Payload" && rm -rf "$(PAYLOAD_PATH)"
 	@echo "${RESULT_CLR}** PACKAGE SUCCEEDED **${RESET_CLR}\n"
+	$(call icon_restore)
+
+icon_backup:
+	-@cp "$(ICON_PATH)/$(ICON_FILE)" "$(shell pwd)/_icon_backup.png"
+
+export icon_version_php
+icon_version:
+	-@if [ "YES" = "$(ICON_TAG)" ]; then echo "$$icon_version_php" > /tmp/icon_version.php && /usr/bin/php /tmp/icon_version.php; fi
+
+icon_restore:
+	-@cp "$(shell pwd)/_icon_backup.png" "$(ICON_PATH)/$(ICON_FILE)" && rm -rf "$(shell pwd)/_icon_backup.png"
 
 plist:
 	@rm -rf $(PLIST_FILE)
