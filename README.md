@@ -1,5 +1,4 @@
-# iOS Makefile (a.k.a. OTA makefile)
-The universal makefile for my iOS projects distributes IPAs in seconds.
+![iOS Makefile - The universal makefile for my iOS projects distributes IPAs in seconds.](https://cloud.githubusercontent.com/assets/219689/3063886/3adcae20-e248-11e3-83b5-437854b66e80.png)
 
 ![Screenshots](https://cloud.githubusercontent.com/assets/219689/2875724/fa99b87a-d424-11e3-8ed6-cc6522b7f257.png)
 
