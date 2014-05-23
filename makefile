@@ -39,6 +39,8 @@ BUILD_LOG   ?= OFF
 ICON_PATH    = $(shell find . -name AppIcon.appiconset -type d )
 ICON_FILE    = $(shell find `find . -name AppIcon.appiconset -type d` -name Contents.json -type f | xargs grep -o 'Icon-60@2x.png')
 LEXR_US     ?= YES
+DOMAIN       = $(subst http://,,$(subst :$(BASE_PORT),,$(subst https://,,$(BASE_URL))))
+CERT_URL     = http://$(DOMAIN)
 
 ifdef WORKSPACE
 INFO_FILE    = $(BUILD_PATH)/Products/$(CONFIG)-iphoneos/$(APP).app/Info.plist
@@ -120,7 +122,7 @@ h1{font-weight:lighter;font-size:1.2em;margin:0;padding:0}a{color:#00f;text-deco
 .install_button{display:block;font-size:1.5em;line-height:44px;margin:.5em auto;background:#eee}\
 .icon_container{width:260px;height:260px}\
 .icon_container .qrcode_img{width:260px;height:260px}\
-.icon_container .icon{position:absolute;border-radius:10px;width:57px;height:57px;margin:101px auto 0 101px}\
+.icon_container .icon{position:absolute;border-radius:14px;width:57px;height:57px;margin:101px auto 0 101px;shadow:0 3px 3px #fff}\
 .release_notes{font-family:"Helvetica","Hei";font-weight:lighter;font-size:.9em;border:1px solid #eee;padding:30px 10px 15px 10px;border-radius:3px;overflow:hidden;text-align:left;line-height:1.3em}\
 .release_notes:before{font-size:.8em;content:"Release Notes";background:#eee;margin:-31px -12px;float:left;padding:3px 8px;border-radius:3px 0 3px 0}.qrcode{width:180px}footer{font-size:.8em}\
 @media print{body{font-size:95%;padding:5em}a{color:#000}.qrcode_img{filter:url(filters.svg#grayscale);filter:gray;-webkit-filter:grayscale(1)}.install_button{display:none}}\
@@ -128,10 +130,11 @@ h1{font-weight:lighter;font-size:1.2em;margin:0;padding:0}a{color:#00f;text-deco
 <h1>$(app_title)</h1>\
 <small>Built on '`date "+%Y-%m-%d %H:%M:%S"`'</small>\
 <p class="icon_container"><img class="icon" src="$(BASE_URL)/icon.png" onerror="this.style.display=&#39;none&#39;"/><img class="qrcode_img" src="$(qrencode)"/></p>\
-<a class="install_button" href="itms-services://?action=download-manifest&amp;url=$(BASE_URL)/$(APP).ipa.plist">INSTALL</a>\
+<a id="cert_button" class="install_button" href="$(BASE_URL)/app.cer">INSTALL Certificate</a>\
+<a id="install_button" class="install_button" href="itms-services://?action=download-manifest&amp;url=$(BASE_URL)/$(APP).ipa.plist">INSTALL $(APP)</a>\
 <p><a href="$(short_url)">$(short_url)</a></p>\
 <pre class="release_notes">$(GIT_LOG)<br/>    ......</pre>\
-<footer>&copy; <a href="https://github.com/lexrus/ios-makefile">iOS-Makefile</a> by <a href="http://lextang.com/">Lex Tang</a></footer></div></body></html>'
+<footer>&copy; <a href="https://github.com/lexrus/ios-makefile">iOS-Makefile</a> by <a href="http://lextang.com/">Lex Tang</a></footer></div></body><script>if(!navigator.userAgent.match(/ like Mac OS X/))document.getElementById("install_button").style.display="none";if(!navigator.userAgent.match(/ OS 7_1/g))document.getElementById("cert_button").style.display="none"</script></html>'
 endef
 
 define cert_conf
@@ -147,7 +150,7 @@ postalCode = '200002'
 streetAddress = 'East NANJING Rd.'
 organizationName = 'LexTang.com'
 organizationalUnitName = 'ios-makefile'
-commonName = 'ios-makefile'
+commonName = '$(DOMAIN)'
 emailAddress = 'ios-makefile@nsnotfound.com'
 endef
 
@@ -287,11 +290,11 @@ send_email:
 export cert_conf
 gen_cert:
 	@echo "$$cert_conf" > /tmp/cert.conf
-	@openssl req -new -x509 -keyout /tmp/server.pem -out /tmp/server.pem -days 365 -nodes -config /tmp/cert.conf
+	-@if [ ! -f "$(BUILD_PATH)/app.pem" ]; then openssl req -new -newkey rsa:4096 -days 365 -nodes -x509 -subj "/CN=$(DOMAIN)" -config /tmp/cert.conf -keyout "$(BUILD_PATH)/app.key"  -out "$(UPLOAD_PATH)/app.cer" && cat "$(BUILD_PATH)/app.key" "$(UPLOAD_PATH)/app.cer" > "$(BUILD_PATH)/app.pem"; fi
 
 serve: gen_cert
 	@echo "${RESULT_CLR}>> $(APP) Server $(BASE_URL) [STARTED]${RESET_CLR}"
-	@twistd -o -l /tmp/twistd.log web --path=$(UPLOAD_PATH) --https=$(BASE_PORT) -c /tmp/server.pem -k /tmp/server.pem
+	@/usr/bin/twistd -o -l /tmp/twistd.log web --path=$(UPLOAD_PATH) --https=$(BASE_PORT) -c "$(BUILD_PATH)/app.pem" -k "$(BUILD_PATH)/app.key" -m "cer=application/x-x509-ca-cert"
 
 stop_serve:
 	@echo "${RESULT_CLR}>> $(APP) Server [STOPPED]${RESET_CLR}"

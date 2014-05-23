@@ -9,7 +9,7 @@ The universal makefile for my iOS projects distributes IPAs in seconds.
 - [x] Shorten URL with my open source shortener: http://lexr.us or https://goo.gl
 - [x] QRCode of URL --- requires [libqrencode](http://fukuchi.org/works/qrencode/)
 - [x] Printer friendly
-- [ ] Compatible for iOS 7.1 (host plist via HTTPS)
+- [x] Compatible for iOS 7.1 (host plist via HTTPS)
 - [x] ```make upload``` --- Upload to SFTP via rsync
 - [x] ```make send_email``` --- Send emails with Mailgun
 - [x] ```make serve``` and ```make stop_serve``` --- Local OTA server with __Bonjour__
@@ -21,7 +21,6 @@ The universal makefile for my iOS projects distributes IPAs in seconds.
 - [ ] ```make gmail```
 - [ ] ```make fir``` --- Upload IPA to [fir.im](http://fir.im/)
 - [ ] ```make dropbox```
-- [ ] ```make aws```
 - [ ] ```make cloudflare```
 - [ ] ```make heroku```
 - [ ] Version subfix for IPAs
