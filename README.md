@@ -2,27 +2,28 @@
 
 ![Screenshots](https://cloud.githubusercontent.com/assets/219689/2875724/fa99b87a-d424-11e3-8ed6-cc6522b7f257.png)
 
-## Features
+## Features & TODOs
 - [x] Git log as release notes
-- [x] Git version on App icon (ImageMagick is NOT required)
-- [x] Shorten URL with my open source shortener: http://lexr.us or https://goo.gl
-- [x] QRCode of URL --- requires [libqrencode](http://fukuchi.org/works/qrencode/)
-- [x] Printer friendly
-- [x] Compatible for iOS 7.1 (host plist via HTTPS)
-- [x] ```make upload``` --- Upload to SFTP via rsync
-- [x] ```make send_email``` --- Send emails with Mailgun
-- [x] ```make serve``` and ```make stop_serve``` --- Local OTA server with __Bonjour__
-- [x] ```make imessage``` --- Send __iMessages__ to tester's iPhone
+- [x] Overlaying git commit & branch on top of your App icon (ImageMagick is NOT required)
+- [ ] Version subfix for IPAs
+- [x] Shorten URL with my open source shortener [lexr.us](http://lexr.us) or [goo.gl](https://goo.gl)
+- [x] QRCode of URL
+- [x] Grayscale printer friendly
 - [x] ```make show_settings PRODUCT_SETTINGS_PATH``` or ```make show_settings | grep FLAG.*``` --- Show build settings
 - [x] ```make sort``` --- Sort Xcode project.pbxproj with [sort-Xcode-project-file](http://danieltull.co.uk/blog/2013/09/05/easier-merging-of-xcode-project-files/)
-- [x] ```make testflight``` --- Upload IPA (and dSYM) to [TestFlightApp](https://testflightapp.com/)
-- [x] ```make hockeyapp``` --- Upload IPA (and dSYM) to [HockeyApp](https://hockeyapp.net/)
-- [ ] ```make gmail```
-- [ ] ```make fir``` --- Upload IPA to [fir.im](http://fir.im/)
-- [ ] ```make dropbox```
-- [ ] ```make cloudflare```
-- [ ] ```make heroku```
-- [ ] Version subfix for IPAs
+- [x] Notify QA team in seconds
+  - [x] ```make send_email``` --- Send emails with Mailgun
+  - [x] ```make imessage``` --- Send __iMessages__ to tester's iPhone
+  - [ ] ```make gmail```
+- [x] Send IPA to various SaaS or serve it by yourself
+  - [x] ```make serve``` and ```make stop_serve``` --- Local OTA server with __Bonjour__ (Compatible for iOS 7.1 with HTTPS)
+  - [x] ```make upload``` --- Upload to SFTP via rsync
+  - [x] ```make testflight``` --- Upload IPA (and dSYM) to [TestFlightApp](https://testflightapp.com/)
+  - [x] ```make hockeyapp``` --- Upload IPA (and dSYM) to [HockeyApp](https://hockeyapp.net/)
+  - [ ] ```make fir``` --- Upload IPA to [fir.im](http://fir.im/)
+  - [ ] ```make dropbox```
+  - [ ] ```make cloudflare```
+  - [ ] ```make heroku```
 
 ## Install
 
@@ -48,4 +49,3 @@ Install [libqrencode](http://fukuchi.org/works/qrencode/) if you need the QRCode
 
 ## License
 This code is distributed under the terms and conditions of the MIT license.
-
