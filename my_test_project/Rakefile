@@ -1,11 +1,14 @@
+UNLINK = "unlink makefile.cfg 2>/dev/null;"
+MAKE   = "make clean icon_backup icon_version build_target package icon_restore html"
+
 desc "Build the default target"
 task :app do
-  exec "unlink makefile.cfg 2>/dev/null; ln -s makefile_target_0.cfg makefile.cfg && make"
+  exec "#{UNLINK} ln -s makefile_target_0.cfg makefile.cfg && #{MAKE}"
 end
 
 desc "Build the second target"
 task :second do
-  exec "unlink makefile.cfg 2>/dev/null; ln -s makefile_target_1.cfg makefile.cfg && make"
+  exec "#{UNLINK} ln -s makefile_target_1.cfg makefile.cfg && #{MAKE}"
 end
 
 task :default => :app
