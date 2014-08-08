@@ -36,6 +36,7 @@ PLIST_SRC    = $(shell find . -name '*-Info.plist' -type f | head -n 1 )
 PLIST_FILE   = $(UPLOAD_PATH)/$(APP).ipa.plist
 IPA_FILE     = $(UPLOAD_PATH)/$(APP).ipa
 BUILD_LOG   ?= OFF
+TARGET      ?= $(APP)
 ICON_PATH    = $(shell find . -name AppIcon.appiconset -type d )
 ICON_FILE    = $(shell find `find . -name AppIcon.appiconset -type d` -name Contents.json -type f | xargs grep -o 'Icon-60@2x.png')
 LEXR_US     ?= YES
@@ -156,12 +157,12 @@ endef
 
 define icon_version_php
 <?php
-$$ver_txt = $$_ENV['ver'] ?: "$(app_short_version) $(BRANCH)";
-$$cmt_txt = $$_ENV['cmt'] ?: "@$(COMMIT)";
-$$icn = $$_ENV['icn'] ?: "$(ICON_PATH)/$(ICON_FILE)";
-$$fnt = $$_ENV['fnt'] ?: '/Library/Fonts/Verdana Bold.ttf';
-$$fnt_size = $$_ENV['fnt_size'] ?: 12;
-$$out = $$_ENV['o'] ?: "$(ICON_PATH)/$(ICON_FILE)";
+@$$ver_txt = $$_ENV['ver'] ?: "$(app_short_version) $(BRANCH)";
+@$$cmt_txt = $$_ENV['cmt'] ?: "@$(COMMIT)";
+@$$icn = $$_ENV['icn'] ?: "$(ICON_PATH)/$(ICON_FILE)";
+@$$fnt = $$_ENV['fnt'] ?: '/Library/Fonts/Verdana Bold.ttf';
+@$$fnt_size = $$_ENV['fnt_size'] ?: 12;
+@$$out = $$_ENV['o'] ?: "$(ICON_PATH)/$(ICON_FILE)";
 
 $$img = imagecreatefrompng($$icn);
 if (!$$img) die();
@@ -206,9 +207,9 @@ default: clean icon_backup icon_version build_app package icon_restore html
 clean:
 	@echo "${INFO_CLR}>> Cleaning $(APP)...${RESTORE_CLR}${RESULT_CLR}"
 ifdef WORKSPACE
-	@xcodebuild -sdk iphoneos -workspace "$(WORKSPACE).xcworkspace" -scheme "$(SCHEME)" -configuration "$(CONFIG)" -jobs 2 clean 2>/dev/null | tail -n 2 | cat && printf "${RESET_CLR}" && rm -rf "$(BUILD_PATH)"
+	@xcodebuild -sdk iphoneos -workspace "$(WORKSPACE).xcworkspace" clean 2>/dev/null | tail -n 2 | cat && printf "${RESET_CLR}" && rm -rf "$(BUILD_PATH)"
 else
-	@xcodebuild -sdk iphoneos -project "$(PROJECT).xcodeproj" -scheme "$(SCHEME)" -configuration "$(CONFIG)" -jobs 2 clean 2>/dev/null | tail -n 2 | cat && printf "${RESET_CLR}" && rm -rf "$(BUILD_PATH)"
+	@xcodebuild -sdk iphoneos -project "$(PROJECT).xcodeproj" clean 2>/dev/null | tail -n 2 | cat && printf "${RESET_CLR}" && rm -rf "$(BUILD_PATH)"
 endif
 	
 build_app:
@@ -217,6 +218,14 @@ ifdef WORKSPACE
 	@xcodebuild -sdk iphoneos -workspace "$(WORKSPACE).xcworkspace" -scheme "$(SCHEME)" -configuration "$(CONFIG)" SYMROOT="$(BUILD_PATH)/Products" -jobs 6 build 2>/dev/null | tail -n 2 | cat && printf "${RESET_CLR}"
 else
 	@xcodebuild -sdk iphoneos -project "$(PROJECT).xcodeproj" -scheme "$(SCHEME)" -configuration "$(CONFIG)" CONFIGURATION_BUILD_DIR="$(BUILD_PATH)/Products" -jobs 6 build 2>/dev/null | tail -n 2 | cat && printf "${RESET_CLR}"
+endif
+
+build_target:
+	@echo "${INFO_CLR}>> Building $(TARGET)...${RESTORE_CLR}${RESULT_CLR}"
+ifdef WORKSPACE
+	@xcodebuild -sdk iphoneos -workspace "$(WORKSPACE).xcworkspace" -target "$(TARGET)" -configuration "$(CONFIG)" SYMROOT="$(BUILD_PATH)/Products" -jobs 6 build 2>/dev/null | tail -n 2 | cat && printf "${RESET_CLR}"
+else
+	@xcodebuild -sdk iphoneos -project "$(PROJECT).xcodeproj" -target "$(TARGET)" -configuration "$(CONFIG)" CONFIGURATION_BUILD_DIR="$(BUILD_PATH)/Products" -jobs 6 build 2>/dev/null | tail -n 2 | cat && printf "${RESET_CLR}"
 endif
 
 show_settings:

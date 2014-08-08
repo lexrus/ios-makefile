@@ -8,6 +8,7 @@
 - [ ] Version subfix for IPAs
 - [x] Shorten URL with my open source shortener [lexr.us](http://lexr.us) or [goo.gl](https://goo.gl)
 - [x] QRCode of URL
+- [x] Multi scheme/target (see #9 )
 - [x] Grayscale printer friendly
 - [x] ```make show_settings PRODUCT_SETTINGS_PATH``` or ```make show_settings | grep FLAG.*``` --- Show build settings
 - [x] ```make sort``` --- Sort Xcode project.pbxproj with [sort-Xcode-project-file](http://danieltull.co.uk/blog/2013/09/05/easier-merging-of-xcode-project-files/)

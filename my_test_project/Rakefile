@@ -1,0 +1,11 @@
+desc "Build the default target"
+task :app do
+  exec "unlink makefile.cfg 2>/dev/null; ln -s makefile_target_0.cfg makefile.cfg && make"
+end
+
+desc "Build the second target"
+task :second do
+  exec "unlink makefile.cfg 2>/dev/null; ln -s makefile_target_1.cfg makefile.cfg && make"
+end
+
+task :default => :app

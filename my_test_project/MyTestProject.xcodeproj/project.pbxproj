@@ -19,6 +19,13 @@
 		D786F8D8192E3D150024775F /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D786F8C0192E3D150024775F /* UIKit.framework */; };
 		D786F8E0192E3D150024775F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D786F8DE192E3D150024775F /* InfoPlist.strings */; };
 		D786F8E2192E3D150024775F /* MyTestProjectTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D786F8E1192E3D150024775F /* MyTestProjectTests.m */; };
+		D7E244DE1995086C007D49D1 /* LTAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D786F8CC192E3D150024775F /* LTAppDelegate.m */; };
+		D7E244DF1995086C007D49D1 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D786F8C8192E3D150024775F /* main.m */; };
+		D7E244E11995086C007D49D1 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D786F8BE192E3D150024775F /* CoreGraphics.framework */; };
+		D7E244E21995086C007D49D1 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D786F8C0192E3D150024775F /* UIKit.framework */; };
+		D7E244E31995086C007D49D1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D786F8BC192E3D150024775F /* Foundation.framework */; };
+		D7E244E51995086C007D49D1 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D786F8C5192E3D150024775F /* InfoPlist.strings */; };
+		D7E244E61995086C007D49D1 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D786F8CE192E3D150024775F /* Images.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +56,7 @@
 		D786F8DF192E3D150024775F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		D786F8E1192E3D150024775F /* MyTestProjectTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyTestProjectTests.m; sourceTree = "<group>"; };
 		D786F8EB192E3DBD0024775F /* makefile.cfg */ = {isa = PBXFileReference; lastKnownFileType = text; path = makefile.cfg; sourceTree = "<group>"; };
+		D7E244EB1995086C007D49D1 /* MyTestProjectSecond.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyTestProjectSecond.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,6 +80,16 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		D7E244E01995086C007D49D1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D7E244E11995086C007D49D1 /* CoreGraphics.framework in Frameworks */,
+				D7E244E21995086C007D49D1 /* UIKit.framework in Frameworks */,
+				D7E244E31995086C007D49D1 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -91,6 +109,7 @@
 			children = (
 				D786F8B9192E3D150024775F /* MyTestProject.app */,
 				D786F8D4192E3D150024775F /* MyTestProjectTests.xctest */,
+				D7E244EB1995086C007D49D1 /* MyTestProjectSecond.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -184,6 +203,23 @@
 			productReference = D786F8D4192E3D150024775F /* MyTestProjectTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		D7E244DC1995086C007D49D1 /* MyTestProjectSecond */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D7E244E71995086C007D49D1 /* Build configuration list for PBXNativeTarget "MyTestProjectSecond" */;
+			buildPhases = (
+				D7E244DD1995086C007D49D1 /* Sources */,
+				D7E244E01995086C007D49D1 /* Frameworks */,
+				D7E244E41995086C007D49D1 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MyTestProjectSecond;
+			productName = MyTestProject;
+			productReference = D7E244EB1995086C007D49D1 /* MyTestProjectSecond.app */;
+			productType = "com.apple.product-type.application";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -194,6 +230,9 @@
 				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = LexTang.com;
 				TargetAttributes = {
+					D786F8B8192E3D150024775F = {
+						DevelopmentTeam = 5SKD83S59G;
+					};
 					D786F8D3192E3D150024775F = {
 						TestTargetID = D786F8B8192E3D150024775F;
 					};
@@ -212,6 +251,7 @@
 			projectRoot = "";
 			targets = (
 				D786F8B8192E3D150024775F /* MyTestProject */,
+				D7E244DC1995086C007D49D1 /* MyTestProjectSecond */,
 				D786F8D3192E3D150024775F /* MyTestProjectTests */,
 			);
 		};
@@ -235,6 +275,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		D7E244E41995086C007D49D1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D7E244E51995086C007D49D1 /* InfoPlist.strings in Resources */,
+				D7E244E61995086C007D49D1 /* Images.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -252,6 +301,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				D786F8E2192E3D150024775F /* MyTestProjectTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D7E244DD1995086C007D49D1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D7E244DE1995086C007D49D1 /* LTAppDelegate.m in Sources */,
+				D7E244DF1995086C007D49D1 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -362,6 +420,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MyTestProject/MyTestProject-Prefix.pch";
 				INFOPLIST_FILE = "MyTestProject/MyTestProject-Info.plist";
@@ -376,7 +436,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MyTestProject/MyTestProject-Prefix.pch";
 				INFOPLIST_FILE = "MyTestProject/MyTestProject-Info.plist";
@@ -426,71 +487,34 @@
 			};
 			name = Release;
 		};
-		D786F8EC192E3E5E0024775F /* Ad Hoc */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				COMPRESS_PNG_FILES = NO;
-				COPY_PHASE_STRIP = YES;
-				ENABLE_NS_ASSERTIONS = NO;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
-				SDKROOT = iphoneos;
-				VALIDATE_PRODUCT = YES;
-			};
-			name = "Ad Hoc";
-		};
-		D786F8ED192E3E5E0024775F /* Ad Hoc */ = {
+		D7E244E81995086C007D49D1 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MyTestProject/MyTestProject-Prefix.pch";
 				INFOPLIST_FILE = "MyTestProject/MyTestProject-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = MyTestProjectSecond;
 				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
-			name = "Ad Hoc";
+			name = Debug;
 		};
-		D786F8EE192E3E5E0024775F /* Ad Hoc */ = {
+		D7E244E91995086C007D49D1 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/MyTestProject.app/MyTestProject";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-				);
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MyTestProject/MyTestProject-Prefix.pch";
-				INFOPLIST_FILE = "MyTestProjectTests/MyTestProjectTests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = xctest;
+				INFOPLIST_FILE = "MyTestProject/MyTestProject-Info.plist";
+				PRODUCT_NAME = MyTestProjectSecond;
+				PROVISIONING_PROFILE = "";
+				WRAPPER_EXTENSION = app;
 			};
-			name = "Ad Hoc";
+			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
@@ -500,7 +524,6 @@
 			buildConfigurations = (
 				D786F8E3192E3D150024775F /* Debug */,
 				D786F8E4192E3D150024775F /* Release */,
-				D786F8EC192E3E5E0024775F /* Ad Hoc */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -510,7 +533,6 @@
 			buildConfigurations = (
 				D786F8E6192E3D150024775F /* Debug */,
 				D786F8E7192E3D150024775F /* Release */,
-				D786F8ED192E3E5E0024775F /* Ad Hoc */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -520,7 +542,15 @@
 			buildConfigurations = (
 				D786F8E9192E3D150024775F /* Debug */,
 				D786F8EA192E3D150024775F /* Release */,
-				D786F8EE192E3E5E0024775F /* Ad Hoc */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D7E244E71995086C007D49D1 /* Build configuration list for PBXNativeTarget "MyTestProjectSecond" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D7E244E81995086C007D49D1 /* Debug */,
+				D7E244E91995086C007D49D1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
